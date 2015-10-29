@@ -3,7 +3,8 @@
 A simple tweet scraper for tweets containing `#dailyQuarry`.
 It scrapes daily scores for the game [QuarriesOfScred](www.quarriesofscred.com)
 It parses name, score, time etc and then exports a jsonfile.
-Included is also a default html template to display the scores.
+
+Included is also a default html template (thanks [purecss](purecss.io/layouts/blog/)) to display the scores.
 
 Disclaimer:
 Scredscore is NOT affiliated with, endorsed, or sponsored by the creator of Quarries of Scred.
