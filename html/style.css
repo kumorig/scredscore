@@ -168,3 +168,4 @@ h3 {
 .score-table {
     width: 100%;
 }
+.score-table img { vertical-align: middle; margin-right: 10px; }

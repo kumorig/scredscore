@@ -30,7 +30,7 @@
           </li>
           <br>
           <li class="nav-item">
-            <a class="pure-button" href="https://github.org">ScredScore on Github (soon)</a>
+            <a class="pure-button" href="https://github.com/kumorig/scredscore">ScredScore on Github</a>
           </li>
         </ul>
       </nav>
@@ -53,22 +53,31 @@
         </header>
 
         <div class="post-description">
-          <table class="pure-table">
+          <table class="pure-table score-table">
             <thead>
             <tr>
               <th>Rank</th>
-              <th>Image</th>
-              <th>Name</th>
+              <th>Twitter Profile</th>
               <th>Score</th>
               <th>Time</th>
               <th>Completion</th>
             </tr>
             </thead>
+
+            <tfoot>
+              <tr>
+                <td colspan="5">Total score: {{day.total_value}}, average: {{day.avg_value}}</td>
+              </tr>
+            </tfoot>
+
+
             <tbody>
             <tr class="pure-table-odd" ng-repeat="score in day.scores">
               <td>#{{$index+1}}</td>
-              <td><a ng-href="https://twitter.com/{{score.username}}"><img ng-src="{{score.profileImage}}" alt=""/></a></td>
-              <td><a ng-href="https://twitter.com/{{score.username}}">{{score.username}}</a></td>
+              <td>
+                <a ng-href="https://twitter.com/{{score.username}}"><img ng-src="{{score.profileImage}}" alt=""/></a>
+                <a ng-href="https://twitter.com/{{score.username}}">{{score.username}}</a>
+              </td>
               <td>{{score.score}}</td>
               <td>{{score.time}}</td>
               <td>{{score.completion}}</td>

@@ -41,17 +41,25 @@ Score.find({'tweet_id': null}, function (err, scores) {
       Score.aggregate([
           {
             $project: {
-              date: 1, username: 1, tweet_id: 1, profileImage: 1, completion: 1, timestamp: 1, score: 1, time:1, scores: 1
+              date: 1, username: 1, tweet_id: 1, profileImage: 1, completion: 1, timestamp: 1, score: 1, time: 1, scores: 1
+            }
+          },
+          {
+            $sort: {
+              date : 1,
+              score: -1
             }
           },
           {
             "$group": {
-              "_id"    : {date: '$date'},
-              scores   : {$push: "$$ROOT"},
-              avg_value: {$sum: "$score"}
+              "_id"      : {date: '$date'},
+              scores     : {$push: "$$ROOT"},
+              total_value: {$sum: "$score"},
+              avg_value  : {$avg: "$score"}
             }
           }
         ], function (err, results) {
+          console.log(results);
           fs.writeFile('html/scores.json', JSON.stringify(results, null, 4), function (err, data) {
             if (err) { console.log("Error:", err); }
             process.exit();

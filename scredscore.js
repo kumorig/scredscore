@@ -1,6 +1,6 @@
 // Twitter stuff
 var Twit = require('twit');
-var config = require('./config.js');
+var config = require('./config-local.js');
 var T = new Twit(config.twitter_config);
 var stream = T.stream('statuses/filter', {track: '#dailyQuarry'});
 
