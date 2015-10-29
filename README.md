@@ -1,10 +1,12 @@
 # scredscore
 
 Dependecies:
+
     "async": "^1.5.0",
     "moment": "^2.10.6",
     "mongoose": "^4.2.3",
     "twit": "^2.1.1"
+    
 (Run `npm install` to install.)
 
 There are 4 files of concern:
