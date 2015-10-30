@@ -46,7 +46,6 @@ Score.find({'tweet_id': null}, function (err, scores) {
           },
           {
             $sort: {
-              date : 1,
               score: -1
             }
           },
@@ -58,8 +57,13 @@ Score.find({'tweet_id': null}, function (err, scores) {
               avg_value  : {$avg: "$score"}
             }
           }
+
         ], function (err, results) {
-          console.log(results);
+          results = results.sort(function (a, b) {
+            var ma = moment(a._id.date);
+            var mb = moment(b._id.date);
+            return ma.isAfter(mb) ? -1 : 1;
+          });
           fs.writeFile('html/scores.json', JSON.stringify(results, null, 4), function (err, data) {
             if (err) { console.log("Error:", err); }
             process.exit();
