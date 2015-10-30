@@ -61,12 +61,13 @@
               <th>Score</th>
               <th>Time</th>
               <th>Completion</th>
+              <th>Tweet</th>
             </tr>
             </thead>
 
             <tfoot>
               <tr>
-                <td colspan="5">Total score: {{day.total_value}}, average: {{day.avg_value}}</td>
+                <td colspan="6">Total score: {{day.total_value}}, average: {{day.avg_value}}</td>
               </tr>
             </tfoot>
 
@@ -81,6 +82,7 @@
               <td>{{score.score}}</td>
               <td>{{score.time}}</td>
               <td>{{score.completion}}</td>
+              <td><a href="https://twitter.com/statuses/{{score.tweet_id}}">{{score.tweet_id}}</a></td>
             </tr>
             </tbody>
           </table>
