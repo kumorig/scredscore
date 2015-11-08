@@ -14,26 +14,53 @@ Score.find({'tweet_id': null}, function (err, scores) {
         scores,
         function (score, cb) {
             var msg = score.tweet.text;
+            var errors = [];
             score.tweet_id = score.tweet.id_str;
             score.username = score.tweet.user.screen_name;
             score.profileImage = score.tweet.user.profile_image_url;
-            score.time = msg.match(/\[Time:\s(.+?)]/)[1];
-            score.completion = (msg.match(/\[Completion:\s(.+)]/)[1] === 'true');
-            score.date = msg.match(/\[Date:\s(.+?)]/)[1];
             score.timestamp = moment(score.tweet.timestamp).toISOString();
-            var scorematches = msg.match(/\n(\d+)\n/);
-            if (scorematches == null)
-                scorematches = msg.match(/\n(\d+)\s?/);
-            score.score = scorematches[0];
-            score.save(function (err, saved) {
-                if (err) {
-                    console.log("Error while saving!", err);
-                    cb(err);
-                } else {
-                    console.log("Processed and saved!!");
-                    cb(null);
-                }
-            });
+
+            var timeMatches = msg.match(/\[Time:\s(.+?)]/);
+            if (null == timeMatches) {
+                errors.push("No matches for time regex :" + msg);
+            } else {
+                score.time = timeMatches[1];
+            }
+
+            var completionMatches = msg.match(/\[Completion:\s(.+)]/);
+            if (null == completionMatches) {
+                errors.push("No matches for completion regex : " + msg);
+            } else {
+                score.completion = ('true' === completionMatches[1]);
+            }
+
+            var dateMatches = msg.match(/\[Date:\s(.+?)]/);
+            if (null == dateMatches) {
+                errors.push("No matches for completion regex : " + msg);
+            } else {
+                score.date = dateMatches[1];
+            }
+
+            var scoreMatches = (msg.match(/\n(\d+)\n/) || msg.match(/\n(\d+)\s?/));
+            if (null == scoreMatches) {
+                errors.push("No matches for scorematches regex : " + msg);
+            } else {
+                score.score = scoreMatches[0];
+            }
+
+            if (err) {
+                cb(err, null)
+            } else {
+                score.save(function (err, saved) {
+                    if (err) {
+                        console.log("Error while saving!", err);
+                        cb(err);
+                    } else {
+                        console.log("Processed and saved!!");
+                        cb(null);
+                    }
+                });
+            }
         },
         function (err, results) {
             if (err) {
@@ -73,7 +100,7 @@ Score.find({'tweet_id': null}, function (err, scores) {
                 ],
                 function (err, aggregated) {
                     async.sortBy(aggregated, function (a, cb) {
-                        cb(null, -moment(a._id.date,"YYYY-M-D").valueOf());
+                        cb(null, -moment(a._id.date, "YYYY-M-D").valueOf());
                     }, function (err, sorted) {
                         fs.writeFile('html/scores.json',
                             JSON.stringify(sorted, null, 4),
