@@ -1,5 +1,15 @@
 # scredscore
 
+## changelog
+
+#### v0.3
+
+    * Added versioning, 0.3 choosen arbitrarily. :p
+    * Fixed some crashing where a message has been added or linebreaks removed.
+    * Replaced default sync sort with async sortBy.
+
+## What is this?
+
 A simple tweet scraper for tweets containing `#dailyQuarry`.
 It scrapes daily scores for the game [QuarriesOfScred](www.quarriesofscred.com)
 It parses name, score, time etc and then exports a jsonfile.
