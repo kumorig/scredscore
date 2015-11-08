@@ -9,7 +9,7 @@ var Score = require('./model-score.js');
 /**
  * First we'll process unprocessed tweets (those without a tweet id).
  */
-Score.find({'tweet_id': null}, function (err, scores) {
+Score.find({tweet_id: null}, function (err, scores) {
     async.mapSeries(
         scores,
         function (score, cb) {
@@ -48,8 +48,8 @@ Score.find({'tweet_id': null}, function (err, scores) {
                 score.score = scoreMatches[0];
             }
 
-            if (err) {
-                cb(err, null)
+            if (errors.length > 0) {
+                cb(err, null);
             } else {
                 score.save(function (err, saved) {
                     if (err) {
@@ -71,6 +71,14 @@ Score.find({'tweet_id': null}, function (err, scores) {
              */
 
             Score.aggregate([
+                    {
+                        $match: {
+                            date: {$exists: true},
+                            score: {$exists: true},
+                            time: {$exists: true},
+                            completion: {$exists: true}
+                        }
+                    },
                     {
                         $project: {
                             date: 1,
@@ -99,6 +107,7 @@ Score.find({'tweet_id': null}, function (err, scores) {
                     }
                 ],
                 function (err, aggregated) {
+                    console.log('aggregated', aggregated);
                     async.sortBy(aggregated, function (a, cb) {
                         cb(null, -moment(a._id.date, "YYYY-M-D").valueOf());
                     }, function (err, sorted) {
